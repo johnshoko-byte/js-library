@@ -4,65 +4,95 @@ let total = 0;
 let read = 0;
 let pending = 0;
 
-const sampleBooks = [
-    {
-        title: "One Hundred Years of Solitude",
-        author: "García Márquez",
-        pages: 471,
-        read: true,
-    },
-    {
-        title: "The Shadow of the Wind",
-        nameAuthor: "Carlos",
-        surnameAuthor: "Ruiz Zafón",
-        pages: 576,
-        read: true,
-    },
-    {
-        title: "Hopscotch",
-        nameAuthor: "Julio",
-        surnameAuthor: "Cortázar",
-        pages: 736,
-        read: false,
-    },
-    {
-        title: "Pedro Páramo",
-        nameAuthor: "Juan",
-        surnameAuthor: "Rulfo",
-        pages: 124,
-        read: true,
-    },
-];
+/* Book constructor */
 
 function Book(title, author, pages, read) {
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.read = read;
+}
+
+/* Shared method for every Book object */
+
+Book.prototype.toggleRead = function () {
+    this.read = !this.read;
 };
 
-function addBookToLibrary(bookObj) {
-    bookObj.id = crypto.randomUUID();
-    myLibrary.push(bookObj);
-};
+/* Sample books must be created using new Book() */
+
+const sampleBooks = [
+    new Book(
+        "One Hundred Years of Solitude",
+        "García Márquez",
+        471,
+        true
+    ),
+
+    new Book(
+        "The Shadow of the Wind",
+        "Carlos Ruiz Zafón",
+        576,
+        true
+    ),
+
+    new Book(
+        "Hopscotch",
+        "Julio Cortázar",
+        736,
+        false
+    ),
+
+    new Book(
+        "Pedro Páramo",
+        "Juan Rulfo",
+        124,
+        true
+    ),
+];
+
+/* Change the read value */
+
+function changeReadState(book) {
+    book.toggleRead();
+}
+
+/* Add a book to the library */
+
+function addBookToLibrary(book) {
+    book.id = crypto.randomUUID();
+    myLibrary.push(book);
+}
+
+/* Delete a book using its ID */
+
+function deleteBook(id) {
+    const bookIndex = myLibrary.findIndex((book) => book.id === id);
+
+    if (bookIndex !== -1) {
+        myLibrary.splice(bookIndex, 1);
+    }
+}
+
+/* Select HTML elements */
 
 const bookShelf = document.querySelector(".bookShelf");
+
 const totalBooksMetric = document.querySelector("#totalMetricValue");
 const readBooksMetric = document.querySelector("#readMetricValue");
 const pendingBooksMetric = document.querySelector("#pendingMetricValue");
 
+/* Calculate library statistics */
+
 function calculateMetrics() {
-    total = 0;
+    total = myLibrary.length;
     read = 0;
     pending = 0;
 
-    total = myLibrary.length;
-
-    for (let book of myLibrary) {
-        if (book.read === true) {
+    for (const book of myLibrary) {
+        if (book.read) {
             read++;
-        }
-        else {
+        } else {
             pending++;
         }
     }
@@ -70,11 +100,14 @@ function calculateMetrics() {
     totalBooksMetric.textContent = total;
     readBooksMetric.textContent = read;
     pendingBooksMetric.textContent = pending;
-};
+}
 
-sampleBooks.forEach(addBookToLibrary);
+/* Display all books */
 
 function renderBooks() {
+    // Remove the old cards before creating updated ones
+    bookShelf.innerHTML = "";
+
     for (const book of myLibrary) {
         const bookCard = document.createElement("div");
         bookCard.className = "book";
@@ -112,37 +145,86 @@ function renderBooks() {
         const cardFoot = document.createElement("div");
         cardFoot.className = "card-foot";
 
-        const toggleRead = document.createElement("button");
-        toggleRead.className = "read-button";
+        const toggleReadButton = document.createElement("button");
+        toggleReadButton.className = "read-button";
 
         if (book.read) {
-            toggleRead.textContent = "Mark Unread";
+            toggleReadButton.textContent = "Mark Unread";
         } else {
-            toggleRead.textContent = "Mark Read";
-        };
+            toggleReadButton.textContent = "Mark Read";
+        }
 
-        const deleteBtn = document.createElement("button");
-        deleteBtn.className = "delete-button";
-        deleteBtn.textContent = "Delete";
+        toggleReadButton.addEventListener("click", () => {
+            changeReadState(book);
+            renderBooks();
+            calculateMetrics();
+        });
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "delete-button";
+        deleteButton.textContent = "Delete";
+
+        deleteButton.addEventListener("click", () => {
+            deleteBook(book.id);
+            renderBooks();
+            calculateMetrics();
+        });
+
+        /* Put the elements together */
 
         titleAndAuthor.appendChild(title);
         titleAndAuthor.appendChild(author);
 
-        cardHero.appendChild(titleAndAuthor)
-        cardHero.appendChild(bookStatusBar)
-
         bookStatusBar.appendChild(pages);
         bookStatusBar.appendChild(readStatus);
 
-        cardFoot.appendChild(toggleRead);
-        cardFoot.appendChild(deleteBtn);
+        cardHero.appendChild(titleAndAuthor);
+        cardHero.appendChild(bookStatusBar);
+
+        cardFoot.appendChild(toggleReadButton);
+        cardFoot.appendChild(deleteButton);
 
         bookCard.appendChild(cardHero);
         bookCard.appendChild(cardFoot);
 
         bookShelf.appendChild(bookCard);
     }
-};
+}
+
+/* Add the sample books */
+
+sampleBooks.forEach((book) => {
+    addBookToLibrary(book);
+});
+
+/* Initial page display */
+const bookDialog = document.querySelector("#book-form");
+const bookForm = document.querySelector("#add-book-form");
+const closeDialogButton = document.querySelector("#close-dialog-button");
+
+closeDialogButton.addEventListener("click", () => {
+    bookDialog.close();
+});
+
+bookForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const title = document.querySelector("#bookTitle").value;
+    const author = document.querySelector("#bookAuthor").value;
+    const pages = Number(document.querySelector("#bookPages").value);
+
+    const read =
+        document.querySelector("#readStatus").value === "true";
+
+    const newBook = new Book(title, author, pages, read);
+
+    addBookToLibrary(newBook);
+    renderBooks();
+    calculateMetrics();
+
+    bookForm.reset();
+    bookDialog.close();
+});
 
 renderBooks();
 calculateMetrics();

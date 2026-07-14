@@ -115,6 +115,8 @@ body {
     flex-direction: column;
     justify-content: space-between;
     padding: 0 0 20px;
+    margin-bottom: 10px;
+    border-bottom: 3px solid var(--subtext);
 }
 
 .title {
@@ -173,4 +175,144 @@ body {
     background-color: var(--accent);
     border-color: #766CA8;
     color: #BBAFF8;
+}
+
+dialog {
+    margin: auto;
+}
+
+/* Dialog container */
+#book-form {
+    width: min(90%, 32rem);
+    padding: 0;
+    border: 3px solid var(--subtext);
+    border-radius: 16px;
+    background-color: var(--container);
+    color: var(--text);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+    overflow: hidden;
+}
+
+/* Darkened page behind the dialog */
+#book-form::backdrop {
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(3px);
+}
+
+/* Form layout */
+#book-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.5rem;
+}
+
+/* Close button */
+#book-form form>button:first-child {
+    align-self: flex-end;
+    padding: 6px 12px;
+    border: 2px solid var(--subtext);
+    border-radius: 6px;
+    background-color: transparent;
+    color: var(--text);
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.15s ease-in-out;
+}
+
+#book-form form>button:first-child:hover {
+    border-color: var(--accent);
+    background-color: var(--accent);
+    color: #e4defe;
+}
+
+/* Fieldset */
+#book-form fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.25rem;
+    border: 2px solid var(--subtext);
+    border-radius: 12px;
+}
+
+/* Form heading */
+#book-form legend {
+    padding: 0 10px;
+    color: var(--primary);
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* Each label and input group */
+#book-form fieldset p {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Labels */
+#book-form label {
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Inputs and select */
+#book-form input,
+#book-form select {
+    width: 100%;
+    padding: 11px 12px;
+    border: 2px solid var(--subtext);
+    border-radius: 8px;
+    outline: none;
+    background-color: var(--background);
+    color: var(--text);
+    font: inherit;
+    font-size: 16px;
+    transition: border-color 0.15s ease-in-out;
+}
+
+#book-form input:focus,
+#book-form select:focus {
+    border-color: var(--primary);
+}
+
+/* Remove number-input arrows if desired */
+#book-form input[type="number"] {
+    appearance: textfield;
+}
+
+#book-form input[type="number"]::-webkit-inner-spin-button,
+#book-form input[type="number"]::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0;
+}
+
+/* Add Book button container */
+#book-form form>div {
+    display: flex;
+}
+
+/* Add Book button */
+#confirmBtn {
+    width: 100%;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--primary);
+    color: #27321e;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.15s ease-in-out;
+}
+
+#confirmBtn:hover {
+    transform: scale(1.02);
+    background-color: #8aaa70;
+}
+
+#confirmBtn:active {
+    transform: scale(0.98);
 }

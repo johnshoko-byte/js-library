@@ -16,7 +16,49 @@
                 <p>Track your reading</p>
             </div>
 
-            <button type="button" class="addBtn">+ Add Book</button>
+            <button command="show-modal" commandfor="book-form" class="addBtn">+ Add Book</button>
+
+            <dialog id="book-form">
+                <form id="add-book-form">
+                    <button type="button" id="close-dialog-button">
+                        Close
+                    </button>
+
+                    <fieldset>
+                        <legend>Add a book</legend>
+
+                        <p>
+                            <label for="bookTitle">Title:</label>
+                            <input id="bookTitle" name="title" type="text" required>
+                        </p>
+
+                        <p>
+                            <label for="bookAuthor">Author:</label>
+                            <input id="bookAuthor" name="author" type="text" required>
+                        </p>
+
+                        <p>
+                            <label for="bookPages">Pages:</label>
+                            <input id="bookPages" name="pages" type="number" min="1" required>
+                        </p>
+
+                        <p>
+                            <label for="readStatus">Have you read it?</label>
+
+                            <select id="readStatus" name="readStatus">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </p>
+                    </fieldset>
+
+                    <div>
+                        <button type="submit" id="confirmBtn">
+                            Add Book
+                        </button>
+                    </div>
+                </form>
+            </dialog>
         </div>
         <div class="metrics">
             <div class="metric total">
