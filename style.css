@@ -95,6 +95,19 @@ body {
 .book {
     display: grid;
     grid-template-rows: 3fr 1fr;
+    position: relative;
+    overflow: hidden;
+    padding-left: 20px;
+}
+
+.book::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 8px;
+    height: 100%;
+    background-color: var(--accent);
 }
 
 .card-hero {
@@ -119,6 +132,17 @@ body {
     font-size: 16px;
 }
 
+.pages {
+    color: var(--subtext);
+}
+
+.read-status {
+    background-color: var(--secondary);
+    padding: 6px 20px;
+    border-radius: 20px;
+    color: #c6ff97;
+}
+
 .card-foot {
     display: flex;
     justify-content: space-between;
@@ -134,8 +158,19 @@ body {
     color: inherit;
     border-radius: 5px;
     cursor: pointer;
+    transition: all 0.1s ease-in-out;
 }
 
 .read-button {
     flex: 1;
+}
+
+.read-button:hover {
+    background-color: var(--subtext);
+}
+
+.delete-button:hover {
+    background-color: var(--accent);
+    border-color: #766CA8;
+    color: #BBAFF8;
 }
