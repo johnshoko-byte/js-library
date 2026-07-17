@@ -5,19 +5,20 @@ let read = 0;
 let pending = 0;
 
 /* Book constructor */
+class Book {
 
-function Book(title, author, pages, read) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
+    constructor(title, author, pages, read) {
+
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+    }
+
+    toggleRead() {
+        this.read = !this.read;
+    }
 }
-
-/* Shared method for every Book object */
-
-Book.prototype.toggleRead = function () {
-    this.read = !this.read;
-};
 
 /* Sample books must be created using new Book() */
 
